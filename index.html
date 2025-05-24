@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My High School Memories</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-family: 'Caveat', cursive;
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .scrapbook-page {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform: rotate(-1deg);
+            transition: all 0.3s ease;
+            display: none;
+            animation: pageFlip 0.8s ease-out;
+        }
+
+        .scrapbook-page.active {
+            display: block;
+        }
+
+        .scrapbook-page:nth-child(even) {
+            transform: rotate(1deg);
+        }
+
+        .scrapbook-page:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: #5a67d8;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: rotate(-2deg);
+        }
+
+        .photo-item:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .photo-item:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 20px 15px 15px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.3rem;
+        }
+
+        .memory-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .memory-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .memory-card:hover {
+            transform: perspective(1000px) rotateY(5deg) translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .memory-card h3 {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .yearbook-quotes {
+            background: #f7fafc;
+            border-left: 5px solid #5a67d8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .yearbook-quotes::before {
+            content: '"';
+            font-size: 4rem;
+            color: #5a67d8;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            opacity: 0.3;
+        }
+
+        .achievements-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .achievement-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: bounce 2s infinite;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #5a67d8;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            background: #5a67d8;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pageFlip {
+            from { opacity: 0; transform: rotateY(-90deg); }
+            to { opacity: 1; transform: rotateY(0deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .scrapbook-page { padding: 20px; }
+            .photo-grid { grid-template-columns: 1fr; }
+            .navigation { gap: 10px; }
+            .nav-btn { padding: 10px 16px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My High School Journey</h1>
+            <p>Class of 2024 • Forever Young</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showPage('freshman')">Freshman Year</button>
+            <button class="nav-btn" onclick="showPage('sophomore')">Sophomore Year</button>
+            <button class="nav-btn" onclick="showPage('junior')">Junior Year</button>
+            <button class="nav-btn" onclick="showPage('senior')">Senior Year</button>
+            <button class="nav-btn" onclick="showPage('memories')">Best Memories</button>
+            <button class="nav-btn" onclick="showPage('friends')">Friends Forever</button>
+        </div>
+
+        <!-- Freshman Year Page -->
+        <div class="scrapbook-page active" id="freshman">
+            <h2 class="page-title">Freshman Year - New Beginnings</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item" onclick="openModal('First Day Jitters', 'Remember being so nervous about finding my locker? Got lost three times before first period!')">
+                    <div class="photo-placeholder">First Day of School</div>
+                    <div class="photo-caption">So nervous but excited!</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Making Friends', 'Met my best friends in the cafeteria when I sat at the wrong table. Best mistake ever!')">
+                    <div class="photo-placeholder">Cafeteria Adventures</div>
+                    <div class="photo-caption">Found my lunch crew</div>
+                </div>
+                <div class="photo-item" onclick="openModal('First Dance', 'Awkward dancing but so much fun. Spent an hour getting ready just to stand by the wall most of the night.')">
+                    <div class="photo-placeholder">Homecoming Dance</div>
+                    <div class="photo-caption">My first high school dance</div>
+                </div>
+            </div>
+
+            <div class="yearbook-quotes">
+                The beginning is the most important part of the work. - Plato
+                <br><small>This quote got me through those scary first weeks!</small>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>September 2020</h3>
+                    <p>Started high school during COVID - virtual learning was weird but we made it work!</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>October 2020</h3>
+                    <p>Joined the drama club online. Who knew Zoom Shakespeare could be so entertaining?</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>December 2020</h3>
+                    <p>First semester finals - survived with lots of coffee and study groups on FaceTime</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sophomore Year Page -->
+        <div class="scrapbook-page" id="sophomore">
+            <h2 class="page-title">Sophomore Year - Finding My Groove</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item" onclick="openModal('Sports Tryouts', 'Finally made JV soccer! Coach said I had heart even if my skills needed work.')">
+                    <div class="photo-placeholder">Soccer Team</div>
+                    <div class="photo-caption">Made the team!</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Science Fair', 'My volcano project was basic but I was so proud. Got honorable mention!')">
+                    <div class="photo-placeholder">Science Fair</div>
+                    <div class="photo-caption">Future scientist?</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Spring Break', 'Family road trip to the Grand Canyon. Complained the whole way but secretly loved it.')">
+                    <div class="photo-placeholder">Family Vacation</div>
+                    <div class="photo-caption">Grand Canyon adventure</div>
+                </div>
+            </div>
+
+            <div class="achievements-list">
+                <span class="achievement-badge">🏆 JV Soccer Team</span>
+                <span class="achievement-badge">🧪 Science Fair Participant</span>
+                <span class="achievement-badge">📚 Honor Roll</span>
+                <span class="achievement-badge">🎭 Drama Club Member</span>
+            </div>
+
+            <div class="memory-cards">
+                <div class="memory-card" onclick="openModal('Sophomore Slump', 'They warned us about sophomore slump, but I actually loved this year. Started finding who I really was.')">
+                    <h3>Growing Up</h3>
+                    <p>This year I started figuring out who I wanted to be...</p>
+                </div>
+                <div class="memory-card" onclick="openModal('New Interests', 'Discovered my love for photography in art class. Started carrying a camera everywhere.')">
+                    <h3>New Passions</h3>
+                    <p>Found my creative side and never looked back...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Junior Year Page -->
+        <div class="scrapbook-page" id="junior">
+            <h2 class="page-title">Junior Year - The Grind</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item" onclick="openModal('SAT Prep', 'Spent every Saturday morning for months preparing. Coffee shop sessions with flashcards became my routine.')">
+                    <div class="photo-placeholder">SAT Study Sessions</div>
+                    <div class="photo-caption">Coffee + flashcards = survival</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Prom Planning', 'Junior prom was magical! Spent months planning every detail with my squad.')">
+                    <div class="photo-placeholder">Junior Prom</div>
+                    <div class="photo-caption">Night to remember</div>
+                </div>
+                <div class="photo-item" onclick="openModal('AP Classes', 'AP Chemistry nearly killed me but I survived! Lab explosions and late night study sessions.')">
+                    <div class="photo-placeholder">AP Chemistry Lab</div>
+                    <div class="photo-caption">Science is tough but fun</div>
+                </div>
+            </div>
+
+            <div class="yearbook-quotes">
+                Junior year: Where sleep goes to die but dreams come alive.
+                <br><small>Honestly, this year was intense but so worth it!</small>
+            </div>
+
+            <div class="achievements-list">
+                <span class="achievement-badge">📊 SAT Score: 1380</span>
+                <span class="achievement-badge">🧬 AP Chemistry</span>
+                <span class="achievement-badge">👑 Prom Committee</span>
+                <span class="achievement-badge">📸 Photography Club President</span>
+                <span class="achievement-badge">🎖️ National Honor Society</span>
+            </div>
+        </div>
+
+        <!-- Senior Year Page -->
+        <div class="scrapbook-page" id="senior">
+            <h2 class="page-title">Senior Year - The Final Chapter</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item" onclick="openModal('College Apps', 'The stress was real! But getting into my dream school made it all worth it.')">
+                    <div class="photo-placeholder">College Acceptance</div>
+                    <div class="photo-caption">Dreams do come true!</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Senior Prom', 'The most magical night! Perfect dress, perfect date, perfect memories.')">
+                    <div class="photo-placeholder">Senior Prom</div>
+                    <div class="photo-caption">Fairy tale ending</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Graduation Day', 'Four years led to this moment. Tears, cheers, and so much pride!')">
+                    <div class="photo-placeholder">Graduation Ceremony</div>
+                    <div class="photo-caption">We did it!</div>
+                </div>
+            </div>
+
+            <div class="memory-cards">
+                <div class="memory-card" onclick="openModal('Senior Skip Day', 'Beach trip with the whole senior class. Perfect way to celebrate making it through!')">
+                    <h3>Senior Skip Day</h3>
+                    <p>One last adventure before graduation...</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Yearbook Signing', 'So many HAGS and KIT messages! Every signature tells our story.')">
+                    <h3>Yearbook Memories</h3>
+                    <p>Collecting signatures and memories...</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Last Day', 'Cleaned out my locker and cried. End of an era but beginning of everything.')">
+                    <h3>Last Day</h3>
+                    <p>Saying goodbye to the halls that raised us...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Memories Page -->
+        <div class="scrapbook-page" id="memories">
+            <h2 class="page-title">Best Memories Ever</h2>
+            
+            <div class="memory-cards">
+                <div class="memory-card" onclick="openModal('Football Games', 'Friday night lights! Cheering until our voices were gone, winning and losing together.')">
+                    <h3>🏈 Friday Night Lights</h3>
+                    <p>The energy, the crowd, the school spirit - nothing beats Friday night football!</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Senior Trip', 'Disney World with the whole senior class. Felt like kids again for one perfect week.')">
+                    <h3>🏰 Senior Trip to Disney</h3>
+                    <p>Magic Kingdom with my favorite people - pure joy and endless laughter!</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Talent Show', 'Our group dance went viral on TikTok! Never felt more proud of our choreography.')">
+                    <h3>💃 Talent Show Fame</h3>
+                    <p>When your high school performance becomes internet famous!</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Snow Day', 'Unexpected day off led to the best sledding adventure and hot chocolate marathon.')">
+                    <h3>❄️ Epic Snow Day</h3>
+                    <p>Sometimes the best memories come from unplanned moments!</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Graduation Party', 'All-night celebration with pizza, games, and promises to stay in touch forever.')">
+                    <h3>🎉 Graduation Night</h3>
+                    <p>The perfect ending to our high school story - laughing until sunrise!</p>
+                </div>
+                <div class="memory-card" onclick="openModal('First Love', 'Holding hands in the hallway, sharing earbuds, thinking it would last forever.')">
+                    <h3>💕 First Love</h3>
+                    <p>Young love in the hallways - innocent, sweet, and unforgettable!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friends Forever Page -->
+        <div class="scrapbook-page" id="friends">
+            <h2 class="page-title">Friends Forever</h2>
+            
+            <div class="photo-grid">
+                <div class="photo-item" onclick="openModal('Squad Goals', 'My ride or die crew! From freshman year awkwardness to senior year confidence together.')">
+                    <div class="photo-placeholder">The Squad</div>
+                    <div class="photo-caption">My people ❤️</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Sleepovers', 'Countless Friday night sleepovers with movies, snacks, and way too much giggling.')">
+                    <div class="photo-placeholder">Sleepover Squad</div>
+                    <div class="photo-caption">Friday night traditions</div>
+                </div>
+                <div class="photo-item" onclick="openModal('Group Chat', 'Our group chat has 50,000+ messages and counting. We literally never stop talking!')">
+                    <div class="photo-placeholder">Group Chat Screenshots</div>
+                    <div class="photo-caption">Never ending conversations</div>
+                </div>
+            </div>
+
+            <div class="yearbook-quotes">
+                Friendship isn't about who you've known the longest, it's about who walked into your life and said 'I'm here for you' and proved it.
+                <br><small>To my amazing friends who made high school unforgettable! 💕</small>
+            </div>
+
+            <div class="memory-cards">
+                <div class="memory-card" onclick="openModal('Study Buddies', 'Late night cramming sessions that somehow always turned into gossip sessions.')">
+                    <h3>Study Sessions</h3>
+                    <p>We came for homework help, stayed for the tea...</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Inside Jokes', 'So many inside jokes that we could have entire conversations in code!')">
+                    <h3>Inside Jokes</h3>
+                    <p>References only we understand - the best kind of friendship...</p>
+                </div>
+                <div class="memory-card" onclick="openModal('Supporting Each Other', 'Through breakups, family drama, and academic stress - we always had each others backs.')">
+                    <h3>Always There</h3>
+                    <p>Through thick and thin, we stuck together...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="memoryModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <p id="modalContent"></p>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.scrapbook-page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function openModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').textContent = content;
+            document.getElementById('memoryModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('memoryModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('memoryModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Add some interactive sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.fontSize = Math.random() * 20 + 10 + 'px';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.animation = 'sparkleFloat 3s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 3000);
+        }
+
+        // Add sparkle animation CSS
+        const sparkleCSS = `
+            @keyframes sparkleFloat {
+                0% { opacity: 1; transform: translateY(0px) rotate(0deg); }
+                100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+            }
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = sparkleCSS;
+        document.head.appendChild(style);
+
+        // Create sparkles occasionally
+        setInterval(createSparkle, 3000);
+
+        // Add page load animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 1s ease-in';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
